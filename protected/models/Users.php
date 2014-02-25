@@ -99,6 +99,7 @@ class Users extends CActiveRecord
 
     public function getData($params = array())
     {
+        $conditions = array();
         if(isset($params['users']) && !empty($params['users']))
         {
             $conditions['user'] = 'u.id IN ('. join(',', (array)$params['users']) .')';
