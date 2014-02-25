@@ -86,17 +86,17 @@ Ext.onReady(function(){
 
     var usersName = Ext.create('Ext.form.CheckboxGroup', {
         fieldLabel: 'Имена',
-        componentCls : 'column'
+        componentCls : 'checkboxGroup'
     });
 
     var educationTitle = Ext.create('Ext.form.CheckboxGroup', {
         fieldLabel: 'Образования',
-        componentCls : 'column'
+        componentCls : 'checkboxGroup'
     });
 
     var citiesTitle = Ext.create('Ext.form.CheckboxGroup', {
         fieldLabel: 'Города',
-        componentCls : 'column'
+        componentCls : 'checkboxGroup'
     });
 
     var fp = Ext.create('Ext.FormPanel', {

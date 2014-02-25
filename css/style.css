@@ -1,0 +1,8 @@
+.checkboxGroup {
+    float: left !important;
+    width: 290px !important;
+}
+
+.checkboxGroup tr td {
+    display: block !important;
+}
