@@ -44,54 +44,6 @@ class Users extends CActiveRecord
 		);
 	}
 
-    public function getData($params = array())
-    {
-        if(isset($params['users']) && !empty($params['users']))
-        {
-            $conditions['user'] = 'u.id IN ('. join(',', (array)$params['users']) .')';
-        }
-
-        if(isset($params['cities']) && !empty($params['cities']))
-        {
-
-            $conditions[] = 'ci.id IN ('. join(',', (array)$params['cities']) .')';
-        }
-
-        if(isset($params['education']) && !empty($params['education']))
-        {
-
-            $conditions[] = 'e.id IN ('. join(',', (array)$params['education']) .')';
-        }
-
-        if ($params)
-        {
-            $condition = join(' AND ', $conditions);
-        }
-
-//        $sql = 'SELECT  u.name, ci.title as cityTitle, e.title as educationTitle FROM users as u
-//                                    JOIN usersCities as uc ON u.id = uc.city_id
-//                                    JOIN cities as ci ON u.id = ci.id
-//                                    JOIN usersEducations as ue ON u.id = ue.education_id
-//                                    JOIN educations as e ON u.id = e.id
-//                                    WHERE u.id IN (1,4) AND ci.id IN (1) AND e.id IN (1)';
-//
-
-        $user = Yii::app()->db->createCommand()
-            ->select('u.name, ci.title as cityTitle, e.title as educationTitle')
-            ->from('users u')
-            ->join('usersCities uc','u.id = uc.user_id')
-            ->join('cities ci', 'uc.city_id = ci.id')
-            ->join('usersEducations ue', 'u.id = ue.user_id')
-            ->join('educations e', 'ue.education_id = e.id')
-            ->where($condition)
-//            ->where('ci.id IN (2) AND e.id IN (2,3)')
-//            ->where(':id AND e.id IN (2,3)', array(':id' => $conditions['user'] ))
-//            ->where('uid=:id OR uid=0', array(':id'=>$this->params['uid']))
-            ->queryAll();
-
-        return $user;
-    }
-
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -143,7 +95,43 @@ class Users extends CActiveRecord
     public function getUsers()
     {
         return Users::model()->findAll();
-//        return Yii::app()->db->createCommand("SELECT * FROM users")->queryAll();
+    }
+
+    public function getData($params = array())
+    {
+        if(isset($params['users']) && !empty($params['users']))
+        {
+            $conditions['user'] = 'u.id IN ('. join(',', (array)$params['users']) .')';
+        }
+
+        if(isset($params['cities']) && !empty($params['cities']))
+        {
+
+            $conditions[] = 'ci.id IN ('. join(',', (array)$params['cities']) .')';
+        }
+
+        if(isset($params['education']) && !empty($params['education']))
+        {
+
+            $conditions[] = 'e.id IN ('. join(',', (array)$params['education']) .')';
+        }
+
+        if ($params)
+        {
+            $condition = join(' AND ', $conditions);
+        }
+
+        $user = Yii::app()->db->createCommand()
+            ->select('u.name, ci.title as cityTitle, e.title as educationTitle')
+            ->from('users u')
+            ->join('usersCities uc','u.id = uc.user_id')
+            ->join('cities ci', 'uc.city_id = ci.id')
+            ->join('usersEducations ue', 'u.id = ue.user_id')
+            ->join('educations e', 'ue.education_id = e.id')
+            ->where($condition)
+            ->queryAll();
+
+        return $user;
     }
 
 }
