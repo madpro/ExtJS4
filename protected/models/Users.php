@@ -117,22 +117,20 @@ class Users extends CActiveRecord
             $conditions[] = 'e.id IN ('. join(',', (array)$params['education']) .')';
         }
 
-        if ($params)
+        $user = Yii::app()->db->createCommand()
+                ->select('u.name, ci.title as cityTitle, e.title as educationTitle')
+                ->from('users u')
+                ->join('usersCities uc','u.id = uc.user_id')
+                ->join('cities ci', 'uc.city_id = ci.id')
+                ->join('usersEducations ue', 'u.id = ue.user_id')
+                ->join('educations e', 'ue.education_id = e.id');
+
+        if (!empty($conditions))
         {
-            $condition = join(' AND ', $conditions);
+            $user->where(join(' AND ', $conditions));
         }
 
-        $user = Yii::app()->db->createCommand()
-            ->select('u.name, ci.title as cityTitle, e.title as educationTitle')
-            ->from('users u')
-            ->join('usersCities uc','u.id = uc.user_id')
-            ->join('cities ci', 'uc.city_id = ci.id')
-            ->join('usersEducations ue', 'u.id = ue.user_id')
-            ->join('educations e', 'ue.education_id = e.id')
-            ->where($condition)
-            ->queryAll();
-
-        return $user;
+        return $user->queryAll();
     }
 
 }
